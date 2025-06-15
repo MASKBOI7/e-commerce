@@ -95,20 +95,60 @@
     }
 
     .tagline {
-      font-size: 26px;
+      font-size: 36px;
       margin-top: 100px;
-      max-width: 80%;
-      color: white;
+      white-space: pre-line;
+      line-height: 1.6;
+      text-align: center;
+      max-width: 90%;
     }
 
-    .product-list {
-      margin-top: 40px;
-      font-size: 20px;
+    .box {
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 30px;
+      margin-top: 80px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+      width: 320px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      align-items: center;
-      font-weight: 500;
+      gap: 15px;
+    }
+
+    .box h2 {
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+
+    .box input {
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-top: 40px;
+      padding: 0 40px;
+      text-align: left;
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    .product-item {
+      font-size: 18px;
+      color: #69c;
+      text-decoration: underline;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .product-item:hover {
+      color: #f66;
     }
   </style>
 </head>
@@ -125,7 +165,11 @@
         <button class="btn" onclick="showScreen('catalog-screen')">Explore</button>
       </div>
     </div>
-    <p class="tagline">Discover more. Buy smart. Elevate your shopping experience.</p>
+    <p class="tagline">
+      Discover more.
+      Buy smart.
+      Elevate your shopping experience.
+    </p>
   </div>
 
   <!-- Signup Screen -->
@@ -151,27 +195,27 @@
         <button class="btn" onclick="showScreen('welcome-screen')">Back</button>
       </div>
     </div>
-    <div class="product-list">
-      <div>1. Smartwatch Pro</div>
-      <div>2. Noise Cancelling Headphones</div>
-      <div>3. Wireless Charging Pad</div>
-      <div>4. Foldable Laptop Stand</div>
-      <div>5. LED Gaming Mouse</div>
-      <div>6. Bluetooth Speaker Boom</div>
-      <div>7. Ultra 4K Webcam</div>
-      <div>8. Smart Home Bulb</div>
-      <div>9. 10,000mAh Power Bank</div>
-      <div>10. Ergonomic Chair</div>
-      <div>11. Minimalist Desk Lamp</div>
-      <div>12. Portable Projector</div>
-      <div>13. Wireless Keyboard</div>
-      <div>14. AI Writing Tablet</div>
-      <div>15. Phone Tripod Mount</div>
-      <div>16. Anti-blue Light Glasses</div>
-      <div>17. USB-C Fast Charger</div>
-      <div>18. Solar Power Bank</div>
-      <div>19. Fitness Smartband</div>
-      <div>20. Electric Toothbrush</div>
+    <div class="product-grid">
+      <div class="product-item">Smartwatch Pro</div>
+      <div class="product-item">Noise Cancelling Headphones</div>
+      <div class="product-item">Wireless Charging Pad</div>
+      <div class="product-item">Foldable Laptop Stand</div>
+      <div class="product-item">LED Gaming Mouse</div>
+      <div class="product-item">Bluetooth Speaker Boom</div>
+      <div class="product-item">Ultra 4K Webcam</div>
+      <div class="product-item">Smart Home Bulb</div>
+      <div class="product-item">10,000mAh Power Bank</div>
+      <div class="product-item">Ergonomic Chair</div>
+      <div class="product-item">Minimalist Desk Lamp</div>
+      <div class="product-item">Portable Projector</div>
+      <div class="product-item">Wireless Keyboard</div>
+      <div class="product-item">AI Writing Tablet</div>
+      <div class="product-item">Phone Tripod Mount</div>
+      <div class="product-item">Anti-blue Light Glasses</div>
+      <div class="product-item">USB-C Fast Charger</div>
+      <div class="product-item">Solar Power Bank</div>
+      <div class="product-item">Fitness Smartband</div>
+      <div class="product-item">Electric Toothbrush</div>
     </div>
   </div>
 
