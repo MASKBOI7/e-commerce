@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Dashboard</title>
+  <title>Signup/Login</title>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@900&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -41,7 +41,7 @@
       transition: background-position 0.05s ease;
     }
 
-    .content, .login-page, .signup-page {
+    .screen {
       position: absolute;
       z-index: 1;
       width: 100%;
@@ -54,57 +54,11 @@
       padding: 20px;
     }
 
-    .search-bar {
-      position: absolute;
-      top: 30px;
-      width: 80%;
-      max-width: 600px;
+    .screen.active {
+      display: flex;
     }
 
-    .search-bar input {
-      width: 100%;
-      padding: 16px 24px;
-      font-size: 22px;
-      border: none;
-      border-radius: 10px;
-      outline: none;
-      background: var(--input-bg);
-      color: var(--input-text);
-      font-family: 'Rubik', sans-serif;
-    }
-
-    .tagline {
-      font-size: 48px;
-      margin-bottom: 50px;
-      font-weight: 900;
-      text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
-    }
-
-    .button-container {
-      text-align: center;
-    }
-
-    .action-button {
-      background-color: var(--button-bg);
-      color: var(--button-text);
-      padding: 16px 36px;
-      margin: 20px;
-      font-size: 26px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease;
-      font-family: 'Rubik', sans-serif;
-      font-weight: 900;
-    }
-
-    .action-button:hover {
-      transform: scale(1.1);
-      background-color: var(--hover-bg);
-      color: var(--hover-text);
-    }
-
-    .login-box, .signup-box {
+    .box {
       background: rgba(255,255,255,0.05);
       padding: 40px;
       border-radius: 12px;
@@ -114,24 +68,13 @@
       box-shadow: 0 0 20px rgba(255, 255, 255, 0.08);
     }
 
-    .login-box h2, .signup-box h2 {
+    h2 {
       margin-bottom: 20px;
       font-size: 28px;
       color: white;
     }
 
-    .login-box button, .signup-box button {
-      margin: 10px 0;
-      padding: 14px;
-      width: 100%;
-      font-size: 18px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-family: 'Rubik', sans-serif;
-    }
-
-    .email-inputs input, .signup-inputs input {
+    input {
       width: 100%;
       margin: 10px 0;
       padding: 12px;
@@ -142,111 +85,93 @@
       font-family: 'Rubik', sans-serif;
     }
 
-    .login-footer {
-      margin-top: 16px;
+    .action-button {
+      background-color: var(--button-bg);
+      color: var(--button-text);
+      padding: 14px;
+      margin: 10px 0;
+      width: 100%;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Rubik', sans-serif;
+    }
+
+    .action-button:hover {
+      transform: scale(1.05);
+      background-color: var(--hover-bg);
+      color: var(--hover-text);
+    }
+
+    .footer {
+      margin-top: 10px;
       font-size: 14px;
       color: #ccc;
     }
 
-    .login-footer a {
+    .footer a {
       color: red;
-      cursor: pointer;
       text-decoration: none;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
+
   <div id="bg-gradient"></div>
 
-  <!-- HOME SCREEN -->
-  <div class="content" id="home-screen" style="display: flex;">
-    <div class="search-bar">
-      <input type="text" placeholder="Search for items..." />
-    </div>
-    <div class="tagline">Your Journey Begins with a Click.</div>
-    <div class="button-container">
-      <button class="action-button">Explore</button>
-      <button class="action-button" onclick="showLogin()">Home</button>
-    </div>
-  </div>
-
-  <!-- LOGIN PAGE -->
-  <div class="login-page" id="login-screen">
-    <div class="login-box">
-      <h2>Login to Continue</h2>
-      <div class="email-inputs">
-        <input type="email" placeholder="Email">
-        <input type="password" placeholder="Password">
-        <button class="action-button">Login</button>
-      </div>
-      <div class="login-footer">
-        Don’t have an account? <a onclick="showSignup()">Signup</a>
-      </div>
+  <!-- Signup Screen -->
+  <div class="screen active" id="signup-screen">
+    <div class="box">
+      <h2>Create Account</h2>
+      <input id="username" type="text" placeholder="Username">
+      <input id="email" type="email" placeholder="Email">
+      <input id="password" type="password" placeholder="Password">
+      <button class="action-button" onclick="validateSignup()">Signup</button>
     </div>
   </div>
 
-  <!-- SIGNUP PAGE -->
-  <div class="signup-page" id="signup-screen">
-    <div class="signup-box">
-      <h2>Create an Account</h2>
-      <div class="signup-inputs">
-        <input id="signup-username" type="text" placeholder="Username">
-        <input id="signup-email" type="email" placeholder="Email">
-        <input id="signup-password" type="password" placeholder="Password">
-        <button class="action-button" onclick="validateSignup()">Signup</button>
-      </div>
-      <div class="login-footer">
-        Already have an account? <a onclick="showLogin()">Login</a>
-      </div>
+  <!-- Login Screen -->
+  <div class="screen" id="login-screen">
+    <div class="box">
+      <h2>Login</h2>
+      <input type="email" placeholder="Email">
+      <input type="password" placeholder="Password">
+      <button class="action-button">Login</button>
+      <div class="footer">Don’t have an account? <a onclick="showScreen('signup-screen')">Signup</a></div>
     </div>
   </div>
 
   <script>
-    const bg = document.getElementById('bg-gradient');
     document.addEventListener('mousemove', e => {
       const x = e.clientX;
       const y = e.clientY;
-      bg.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.08), transparent 40%)`;
+      document.getElementById('bg-gradient').style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.08), transparent 40%)`;
     });
 
-    function showLogin() {
-      document.getElementById('home-screen').style.display = 'none';
-      document.getElementById('signup-screen').style.display = 'none';
-      document.getElementById('login-screen').style.display = 'flex';
-    }
-
-    function showSignup() {
-      document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('home-screen').style.display = 'none';
-      document.getElementById('signup-screen').style.display = 'flex';
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
     }
 
     function validateSignup() {
-      const username = document.getElementById('signup-username').value.trim();
-      const email = document.getElementById('signup-email').value.trim();
-      const password = document.getElementById('signup-password').value.trim();
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
 
-      const usernameValid = username.length >= 3 && username.length <= 15;
-      const emailValid = email.includes('@') && email.endsWith('.com');
-      const passwordValid = password.length > 6 &&
-                            /[a-z]/.test(password) &&
-                            /[A-Z]/.test(password);
+      const validUsername = username.length >= 3 && username.length <= 15;
+      const validEmail = email.includes("@") && email.endsWith(".com");
+      const validPassword = password.length > 6 && /[A-Z]/.test(password) && /[a-z]/.test(password);
 
-      if (!usernameValid) {
-        alert("Username must be 3-15 characters.");
-        return;
-      }
-      if (!emailValid) {
-        alert("Email must include '@' and end with '.com'");
-        return;
-      }
-      if (!passwordValid) {
-        alert("Password must be >6 characters with at least 1 uppercase and 1 lowercase letter.");
-        return;
-      }
+      if (!validUsername) return alert("Username must be 3–15 characters.");
+      if (!validEmail) return alert("Email must include '@' and end with '.com'");
+      if (!validPassword) return alert("Password must be >6 chars with 1 uppercase and 1 lowercase.");
 
-      alert("Signup Successful!");
+      showScreen('login-screen');
     }
   </script>
+
 </body>
 </html>
