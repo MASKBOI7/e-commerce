@@ -201,19 +201,24 @@
   </div>
 
   <script>
-    const productsData = {};
-    const categories = [
-      'Electronics', 'Fashion', 'Home', 'Beauty', 'Sports', 'Toys', 'Books', 'Groceries', 'Health', 'Automotive',
-      'Office', 'Garden', 'Jewelry', 'Shoes', 'Watches', 'Music', 'Pets', 'Travel', 'Tools', 'Gaming'
-    ];
-
-    categories.forEach(cat => {
-      productsData[cat] = {};
-      for (let i = 1; i <= 20; i++) {
-        const sub = `Sub-${i}`;
-        productsData[cat][sub] = Array.from({ length: 40 }, (_, j) => `${cat} ${sub} Product ${j+1}`);
+    const storeData = {
+      Electronics: {
+        Laptops: [
+          { name: 'MacBook Pro', image: 'https://source.unsplash.com/300x200/?macbook' },
+          { name: 'Dell XPS 13', image: 'https://source.unsplash.com/300x200/?laptop,dell' },
+          { name: 'HP Spectre x360', image: 'https://source.unsplash.com/300x200/?hp,laptop' },
+          { name: 'Lenovo ThinkPad', image: 'https://source.unsplash.com/300x200/?thinkpad' }
+        ]
+      },
+      Fashion: {
+        Shirts: [
+          { name: 'Slim Fit Shirt', image: 'https://source.unsplash.com/300x200/?shirt' },
+          { name: 'Flannel Shirt', image: 'https://source.unsplash.com/300x200/?flannel' },
+          { name: 'Casual T-Shirt', image: 'https://source.unsplash.com/300x200/?tshirt' },
+          { name: 'Graphic Tee', image: 'https://source.unsplash.com/300x200/?graphic,tee' }
+        ]
       }
-    });
+    };
 
     document.body.addEventListener('mousemove', (e) => {
       document.body.style.setProperty('--x', `${e.clientX}px`);
@@ -221,11 +226,7 @@
     });
 
     function goHome() {
-      document.getElementById('categoryList').style.display = 'none';
-      document.getElementById('subCategoryList').style.display = 'none';
-      document.getElementById('productList').style.display = 'none';
-      document.getElementById('signupForm').style.display = 'none';
-      document.getElementById('loginForm').style.display = 'none';
+      ['categoryList','subCategoryList','productList','signupForm','loginForm'].forEach(id => document.getElementById(id).style.display = 'none');
       document.getElementById('tagline').style.display = 'block';
     }
 
@@ -234,23 +235,20 @@
     }
 
     function showSignup() {
-      goHome();
-      hideTagline();
+      goHome(); hideTagline();
       document.getElementById('signupForm').style.display = 'flex';
     }
 
     function showLogin() {
-      goHome();
-      hideTagline();
+      goHome(); hideTagline();
       document.getElementById('loginForm').style.display = 'flex';
     }
 
     function showCategories() {
-      goHome();
-      hideTagline();
+      goHome(); hideTagline();
       const container = document.getElementById('categoryList');
       container.innerHTML = '';
-      categories.forEach(category => {
+      Object.keys(storeData).forEach(category => {
         const a = document.createElement('a');
         a.innerText = category;
         a.onclick = () => showSubCategories(category);
@@ -260,12 +258,10 @@
     }
 
     function showSubCategories(category) {
-      goHome();
-      hideTagline();
+      goHome(); hideTagline();
       const container = document.getElementById('subCategoryList');
       container.innerHTML = '';
-      const subs = Object.keys(productsData[category]);
-      subs.forEach(sub => {
+      Object.keys(storeData[category]).forEach(sub => {
         const a = document.createElement('a');
         a.innerText = sub;
         a.onclick = () => showProducts(category, sub);
@@ -275,22 +271,20 @@
     }
 
     function showProducts(category, subCategory) {
-      goHome();
-      hideTagline();
+      goHome(); hideTagline();
       const container = document.getElementById('productList');
       container.innerHTML = '';
-      const items = productsData[category][subCategory];
-      items.forEach((name, i) => {
+      storeData[category][subCategory].forEach(prod => {
         const div = document.createElement('div');
         div.classList.add('product-card');
 
         const img = document.createElement('div');
         img.classList.add('product-image');
-        img.style.backgroundImage = `url('https://source.unsplash.com/300x200/?${subCategory},product&sig=${i}')`;
+        img.style.backgroundImage = `url('${prod.image}')`;
 
         const title = document.createElement('div');
         title.classList.add('product-title');
-        title.innerText = name;
+        title.innerText = prod.name;
 
         div.appendChild(img);
         div.appendChild(title);
