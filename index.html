@@ -5,7 +5,7 @@
   <title>Dashboard</title>
   <!-- ✅ Rubik Black Font -->
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@900&display=swap" rel="stylesheet" />
-  <!-- ✅ Font Awesome -->
+  <!-- ✅ Font Awesome (still loaded in case we use icons later) -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
   <style>
     :root {
@@ -16,17 +16,6 @@
       --button-bg: white;
       --button-text: black;
       --hover-bg: red;
-      --hover-text: white;
-    }
-
-    body.light-mode {
-      --bg-color: white;
-      --text-color: black;
-      --input-bg: #f0f0f0;
-      --input-text: #222;
-      --button-bg: black;
-      --button-text: white;
-      --hover-bg: crimson;
       --hover-text: white;
     }
 
@@ -41,7 +30,6 @@
       overflow: hidden;
       background: var(--bg-color);
       font-family: 'Rubik', sans-serif;
-      transition: background 0.3s ease, color 0.3s ease;
       color: var(--text-color);
     }
 
@@ -117,27 +105,6 @@
       background-color: var(--hover-bg);
       color: var(--hover-text);
     }
-
-    .dark-toggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 2;
-      background: var(--button-bg);
-      color: var(--button-text);
-      border: none;
-      padding: 14px 16px;
-      font-size: 24px;
-      border-radius: 50%;
-      cursor: pointer;
-      transition: transform 0.2s, background 0.3s ease, color 0.3s ease;
-    }
-
-    .dark-toggle:hover {
-      transform: scale(1.2);
-      background-color: var(--hover-bg);
-      color: var(--hover-text);
-    }
   </style>
 </head>
 <body>
@@ -156,37 +123,15 @@
     </div>
   </div>
 
-  <button class="dark-toggle" onclick="toggleMode()">
-    <i id="mode-icon" class="fa-solid fa-moon"></i>
-  </button>
-
   <script>
     const bg = document.getElementById('bg-gradient');
-    const icon = document.getElementById('mode-icon');
 
     document.addEventListener('mousemove', e => {
       const x = e.clientX;
       const y = e.clientY;
 
-      const isLight = document.body.classList.contains('light-mode');
-
-      bg.style.background = isLight
-        ? `radial-gradient(circle at ${x}px ${y}px, rgba(0,0,0,0.08), transparent 40%)`
-        : `radial-gradient(circle at ${x}px ${y}px, rgba(0,0,0,0.4), transparent 40%)`;
+      bg.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.08), transparent 40%)`;
     });
-
-    function toggleMode() {
-      const body = document.body;
-      body.classList.toggle('light-mode');
-
-      if (body.classList.contains('light-mode')) {
-        icon.classList.remove('fa-moon');
-        icon.classList.add('fa-sun');
-      } else {
-        icon.classList.remove('fa-sun');
-        icon.classList.add('fa-moon');
-      }
-    }
   </script>
 </body>
 </html>
