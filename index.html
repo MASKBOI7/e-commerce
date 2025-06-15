@@ -1,254 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Elevate</title>
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@900&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg-color: black;
-      --text-color: white;
-      --hover-glow: 0 0 15px white;
-    }
-
-    * {
+    body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+      background: black;
+      color: white;
+      overflow-x: hidden;
     }
 
-    html, body {
-      height: 100%;
-      background: var(--bg-color);
-      font-family: 'Rubik', sans-serif;
-      color: var(--text-color);
-      overflow: hidden;
-    }
-
-    #bg-gradient {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .screen {
-      position: absolute;
-      z-index: 1;
-      width: 100%;
-      height: 100%;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-    }
-
-    .screen.active {
-      display: flex;
-    }
-
-    .top-bar {
-      width: 100%;
+    header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 40px;
+      padding: 20px;
     }
 
     .logo {
-      font-size: 28px;
+      font-size: 32px;
       font-weight: bold;
-      color: white;
-      transition: 0.3s;
       cursor: pointer;
+      transition: 0.3s;
     }
 
     .logo:hover {
-      text-shadow: var(--hover-glow);
+      text-shadow: 0 0 10px white;
     }
 
-    .btn-group {
+    .nav-buttons {
       display: flex;
       gap: 20px;
     }
 
-    .btn {
+    .nav-buttons button {
       background-color: white;
       color: black;
-      padding: 10px 20px;
-      font-size: 18px;
       border: none;
-      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 16px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      font-family: 'Rubik', sans-serif;
+      transition: transform 0.2s, background-color 0.2s;
     }
 
-    .btn:hover {
-      transform: scale(1.08);
+    .nav-buttons button:hover {
+      transform: scale(1.05);
       background-color: red;
       color: white;
     }
 
     .tagline {
-      font-size: 32px;
-      margin-top: 100px;
-      white-space: pre-line;
-      line-height: 1.6;
       text-align: center;
-      max-width: 90%;
+      margin-top: 50px;
+      font-size: 28px;
+      white-space: pre-line;
     }
 
-    .box {
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
-      padding: 30px;
-      margin-top: 80px;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-      width: 320px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      padding: 50px;
+      text-align: center;
     }
 
-    .box h2 {
-      margin-bottom: 10px;
-      font-size: 24px;
+    .category {
+      font-family: sans-serif;
+      font-size: 14px;
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s, text-shadow 0.3s;
     }
 
-    .box input {
-      padding: 10px;
-      font-size: 16px;
-      border: none;
-      border-radius: 6px;
-      outline: none;
+    .category:hover {
+      color: white;
+      text-shadow: 0 0 5px white;
     }
 
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 40px 50px;
-      margin-top: 60px;
-      padding: 0 40px;
-      text-align: left;
-      width: 100%;
-      max-width: 1000px;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+      padding: 50px;
+      text-align: center;
     }
 
-    .product-item {
-      font-family: sans-serif;
-      font-size: 16px;
-      color: #ccc;
-      text-decoration: underline;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    .product-item:hover {
+    .product {
+      font-size: 14px;
       color: white;
-      text-shadow: 0 0 10px white;
     }
   </style>
 </head>
 <body>
-
-  <div id="bg-gradient"></div>
-
-  <!-- Welcome Screen -->
-  <div class="screen active" id="welcome-screen">
-    <div class="top-bar">
-      <div class="logo" onclick="showScreen('welcome-screen')">Elevate</div>
-      <div class="btn-group">
-        <button class="btn" onclick="showScreen('signup-screen')">Home</button>
-        <button class="btn" onclick="showScreen('catalog-screen')">Explore</button>
-      </div>
+  <header>
+    <div class="logo" onclick="goHome()">Elevate</div>
+    <div class="nav-buttons">
+      <button onclick="goHome()">Home</button>
+      <button onclick="showCategories()">Explore</button>
     </div>
-    <p class="tagline">
-      Discover more.
-      Buy smart.
-      Elevate your shopping experience.
-    </p>
+  </header>
+
+  <div class="tagline" id="tagline">
+    Discover more.
+    Buy smart.
+    Elevate your shopping experience.
   </div>
 
-  <!-- Signup Screen -->
-  <div class="screen" id="signup-screen">
-    <div class="top-bar">
-      <div class="logo" onclick="showScreen('welcome-screen')">Elevate</div>
-    </div>
-    <div class="box">
-      <h2>Create Account</h2>
-      <input id="username" type="text" placeholder="Username">
-      <input id="email" type="email" placeholder="Email">
-      <input id="password" type="password" placeholder="Password">
-      <button class="btn" onclick="validateSignup()">Signup</button>
-    </div>
-  </div>
-
-  <!-- Catalog Screen -->
-  <div class="screen" id="catalog-screen">
-    <div class="top-bar">
-      <div class="logo" onclick="showScreen('welcome-screen')">Elevate</div>
-      <div class="btn-group">
-        <button class="btn" onclick="showScreen('signup-screen')">Home</button>
-        <button class="btn" onclick="showScreen('welcome-screen')">Back</button>
-      </div>
-    </div>
-    <div class="product-grid">
-      <div class="product-item">Clothing</div>
-      <div class="product-item">Electronics</div>
-      <div class="product-item">Home Appliances</div>
-      <div class="product-item">Gaming</div>
-      <div class="product-item">Footwear</div>
-      <div class="product-item">Mobile Accessories</div>
-      <div class="product-item">Beauty Products</div>
-      <div class="product-item">Watches</div>
-      <div class="product-item">Fitness</div>
-      <div class="product-item">Books</div>
-      <div class="product-item">Smart Devices</div>
-      <div class="product-item">Office Supplies</div>
-      <div class="product-item">Furniture</div>
-      <div class="product-item">Kitchen Essentials</div>
-      <div class="product-item">Music & Audio</div>
-      <div class="product-item">Cameras</div>
-      <div class="product-item">Toys & Games</div>
-      <div class="product-item">Travel Gear</div>
-      <div class="product-item">Pet Supplies</div>
-      <div class="product-item">Fashion Accessories</div>
-    </div>
-  </div>
+  <div id="categoryContainer" class="category-grid" style="display: none;"></div>
+  <div id="productContainer" class="product-grid" style="display: none;"></div>
 
   <script>
-    document.addEventListener('mousemove', e => {
-      const x = e.clientX;
-      const y = e.clientY;
-      document.getElementById('bg-gradient').style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.08), transparent 40%)`;
-    });
+    const categories = {
+      Clothing: ['Hoodies', 'T-shirts', 'Skirts', 'Jeans', 'Dresses', 'Sweatshirts', 'Jackets', 'Coats', 'Shorts', 'Caps', 'Shoes', 'Belts', 'Suits', 'Sarees', 'Tops', 'Blazers', 'Sweaters', 'Leggings', 'Formals', 'Ties'],
+      Electronics: ['Smartphones', 'Laptops', 'Headphones', 'Smartwatches', 'Cameras', 'Speakers', 'Monitors', 'Chargers', 'Power Banks', 'Keyboards', 'Mice', 'Drones', 'Projectors', 'Tablets', 'Game Consoles', 'Flash Drives', 'SSD', 'Webcams', 'Routers', 'Printers'],
+      Footwear: ['Sneakers', 'Sandals', 'Loafers', 'Formal Shoes', 'Flip Flops', 'Boots', 'Heels', 'Slippers', 'Running Shoes', 'Trainers', 'Wedges', 'Oxfords', 'Brogues', 'Mules', 'Derby Shoes', 'Chukkas', 'Espadrilles', 'Crocs', 'Slides', 'Plimsolls'],
+      Appliances: ['Refrigerators', 'Washing Machines', 'Microwaves', 'Air Conditioners', 'Heaters', 'Mixers', 'Toasters', 'Electric Kettles', 'Water Purifiers', 'Coffee Makers', 'Air Fryers', 'Blenders', 'Ovens', 'Dishwashers', 'Coolers', 'Rice Cookers', 'Iron Boxes', 'Hair Dryers', 'Vacuum Cleaners', 'Steamers'],
+      Furniture: ['Beds', 'Sofas', 'Chairs', 'Tables', 'Wardrobes', 'Bookshelves', 'TV Units', 'Desks', 'Recliners', 'Dining Tables', 'Coffee Tables', 'Shoe Racks', 'Cabinets', 'Stools', 'Benches', 'Ottomans', 'Dressers', 'Nightstands', 'Bean Bags', 'Cradles'],
+      Books: ['Novels', 'Textbooks', 'Comics', 'Magazines', 'Biographies', 'Fantasy', 'Mystery', 'Romance', 'Horror', 'Science', 'History', 'Self Help', 'Technology', 'Poetry', 'Religion', 'Travel', 'Cookbooks', 'Drama', 'Guides', 'Memoirs'],
+      Toys: ['Action Figures', 'Dolls', 'Cars', 'Building Sets', 'Board Games', 'Puzzles', 'Plush Toys', 'Kits', 'RC Toys', 'Educational Toys', 'Blocks', 'Musical Toys', 'Art Kits', 'Pretend Play', 'Craft Toys', 'Marbles', 'Yo-Yos', 'Trains', 'Robots', 'Tops'],
+      Sports: ['Cricket Bats', 'Footballs', 'Tennis Rackets', 'Basketballs', 'Yoga Mats', 'Dumbbells', 'Skates', 'Cycling Helmets', 'Skipping Ropes', 'Knee Pads', 'Track Suits', 'Sweatbands', 'Shin Guards', 'Water Bottles', 'Sports Bags', 'Volleyballs', 'Hockey Sticks', 'Baseballs', 'Badminton Rackets', 'Table Tennis'],
+      Beauty: ['Lipsticks', 'Foundations', 'Compacts', 'Blush', 'Eyeliners', 'Mascaras', 'Nail Paints', 'Face Washes', 'Shampoos', 'Conditioners', 'Hair Oils', 'Perfumes', 'Serums', 'Moisturizers', 'Sunscreens', 'Cleansers', 'Scrubs', 'Makeup Kits', 'Hair Colors', 'Face Masks'],
+      Accessories: ['Watches', 'Sunglasses', 'Backpacks', 'Wallets', 'Belts', 'Hats', 'Scarves', 'Gloves', 'Earrings', 'Bracelets', 'Rings', 'Necklaces', 'Chains', 'Brooches', 'Hair Bands', 'Keychains', 'Bags', 'Clutches', 'Cufflinks', 'Ties'],
+      Grocery: ['Rice', 'Wheat', 'Sugar', 'Salt', 'Spices', 'Vegetables', 'Fruits', 'Pulses', 'Oils', 'Tea', 'Coffee', 'Snacks', 'Biscuits', 'Juices', 'Milk', 'Eggs', 'Bread', 'Honey', 'Pickles', 'Sauces'],
+      Stationery: ['Pens', 'Pencils', 'Notebooks', 'Markers', 'Erasers', 'Sharpeners', 'Rulers', 'Folders', 'Paper Clips', 'Binders', 'Glue', 'Tape', 'Scissors', 'Calculators', 'Sketchbooks', 'Highlighters', 'Staplers', 'Punchers', 'Drawing Sheets', 'Inks'],
+      Music: ['Guitars', 'Keyboards', 'Drums', 'Microphones', 'Speakers', 'Amplifiers', 'Violins', 'DJ Mixers', 'Flutes', 'Trumpets', 'Headphones', 'Sound Cards', 'Cables', 'Picks', 'Tuners', 'Pedals', 'Stands', 'Metronomes', 'Bongos', 'Harmonicas'],
+      Gaming: ['Consoles', 'Controllers', 'Games', 'Headsets', 'Gaming Chairs', 'VR Sets', 'Graphics Cards', 'Cooling Pads', 'Monitors', 'Keyboards', 'Mice', 'Webcams', 'Cables', 'Power Supply', 'Storage Devices', 'Motherboards', 'Routers', 'Streaming Gear', 'Adapters', 'Mounts'],
+      Art: ['Paints', 'Brushes', 'Canvases', 'Easels', 'Palettes', 'Sketch Pads', 'Markers', 'Charcoal', 'Pencils', 'Acrylics', 'Watercolors', 'Pastels', 'Inks', 'Oil Paints', 'Scrapbooks', 'Glue', 'Rulers', 'Cutters', 'Frames', 'Art Kits'],
+      Health: ['Masks', 'Sanitizers', 'Thermometers', 'BP Monitors', 'Oximeters', 'Weighing Machines', 'Supplements', 'Medicines', 'Oils', 'Bandages', 'Creams', 'Syrups', 'Tablets', 'Tubes', 'Vitamins', 'Cough Drops', 'Sprays', 'Eye Drops', 'Toothpaste', 'Brushes'],
+      Travel: ['Luggage', 'Bags', 'Trolleys', 'Neck Pillows', 'Travel Kits', 'Adapters', 'Locks', 'Maps', 'Pouches', 'Backpacks', 'Tags', 'Jackets', 'Shoes', 'Tents', 'Sleeping Bags', 'Flasks', 'Compasses', 'Torch Lights', 'Travel Guides', 'Belts'],
+      Baby: ['Diapers', 'Wipes', 'Lotions', 'Powder', 'Shampoo', 'Soap', 'Oil', 'Milk Bottles', 'Pacifiers', 'Clothes', 'Shoes', 'Bibs', 'Bedding', 'Toys', 'Teethers', 'Walkers', 'Strollers', 'Car Seats', 'Bath Tubs', 'Caps'],
+      Pet: ['Food', 'Bowls', 'Leashes', 'Collars', 'Beds', 'Toys', 'Shampoo', 'Clothes', 'Cages', 'Litter Boxes', 'Grooming Tools', 'Medicines', 'Vitamins', 'Snacks', 'Blankets', 'Tick Remover', 'Brushes', 'Houses', 'Chew Toys', 'Treats']
+    };
 
-    function showScreen(id) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
+    function goHome() {
+      document.getElementById('tagline').style.display = 'block';
+      document.getElementById('categoryContainer').style.display = 'none';
+      document.getElementById('productContainer').style.display = 'none';
     }
 
-    function validateSignup() {
-      const username = document.getElementById('username').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value.trim();
+    function showCategories() {
+      const container = document.getElementById('categoryContainer');
+      container.innerHTML = '';
+      Object.keys(categories).forEach(cat => {
+        const link = document.createElement('a');
+        link.textContent = cat;
+        link.className = 'category';
+        link.href = '#';
+        link.onclick = () => showProducts(cat);
+        container.appendChild(link);
+      });
+      document.getElementById('tagline').style.display = 'none';
+      container.style.display = 'grid';
+      document.getElementById('productContainer').style.display = 'none';
+    }
 
-      const validUsername = username.length >= 3 && username.length <= 15;
-      const validEmail = email.includes("@") && email.endsWith(".com");
-      const validPassword = password.length > 6 && /[A-Z]/.test(password) && /[a-z]/.test(password);
-
-      if (!validUsername) return alert("Username must be 3–15 characters.");
-      if (!validEmail) return alert("Email must include '@' and end with '.com'");
-      if (!validPassword) return alert("Password must be >6 chars with 1 uppercase and 1 lowercase.");
-
-      showScreen('welcome-screen');
+    function showProducts(category) {
+      const productContainer = document.getElementById('productContainer');
+      productContainer.innerHTML = '';
+      categories[category].forEach(product => {
+        const div = document.createElement('div');
+        div.className = 'product';
+        div.textContent = product;
+        productContainer.appendChild(div);
+      });
+      document.getElementById('categoryContainer').style.display = 'none';
+      productContainer.style.display = 'grid';
     }
   </script>
-
 </body>
 </html>
