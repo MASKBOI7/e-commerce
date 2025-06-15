@@ -3,319 +3,161 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Elevate</title>
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@900&display=swap" rel="stylesheet">
+  <title>Flappy Bird - HTML5</title>
   <style>
-    * {
+    html, body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
+      overflow: hidden;
+      background: #70c5ce;
+      font-family: 'Segoe UI', sans-serif;
     }
-
-    body {
-      font-family: 'Rubik', sans-serif;
-      background-color: black;
-      overflow-x: hidden;
-      color: white;
-      position: relative;
+    canvas {
+      display: block;
+      margin: 0 auto;
+      background: #70c5ce;
     }
-
-    body::before {
-      content: "";
+    #score {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,255,255,0.1), transparent 60%);
-      z-index: 0;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .logo {
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
       font-size: 32px;
       font-weight: bold;
       color: white;
-      cursor: pointer;
-      transition: text-shadow 0.3s ease;
-    }
-
-    .logo:hover {
-      text-shadow: 0 0 10px white;
-    }
-
-    .nav-buttons {
-      display: flex;
-      gap: 20px;
-    }
-
-    .nav-buttons button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 25px;
-      background-color: white;
-      color: black;
-      cursor: pointer;
-      font-weight: bold;
-      transition: all 0.3s ease;
-    }
-
-    .nav-buttons button:hover {
-      background-color: red;
-      transform: scale(1.1);
-      color: white;
-    }
-
-    .tagline {
-      text-align: center;
-      font-size: 36px;
-      margin: 50px 0 30px;
-      line-height: 1.5;
-      position: relative;
-      z-index: 1;
-    }
-
-    .categories, .sub-categories, .products {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 30px;
-      justify-items: center;
-      padding: 20px;
-      margin-top: 40px;
-      position: relative;
-      z-index: 1;
-      font-family: Arial, sans-serif;
-      font-size: 16px;
-    }
-
-    .categories a, .sub-categories a, .products div {
-      color: white;
-      text-decoration: none;
-      transition: color 0.3s, text-shadow 0.3s;
-      cursor: pointer;
-    }
-
-    .categories a:hover, .sub-categories a:hover, .products div:hover {
-      color: white;
-      text-shadow: 0 0 5px white;
-    }
-
-    .form-box {
-      max-width: 350px;
-      margin: 40px auto;
-      padding: 30px;
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      font-size: 16px;
-    }
-
-    .form-box input {
-      padding: 10px;
-      border-radius: 10px;
-      border: none;
-      font-family: 'Rubik', sans-serif;
-    }
-
-    .form-box button {
-      padding: 10px;
-      border: none;
-      border-radius: 15px;
-      background-color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .form-box button:hover {
-      background-color: red;
-      color: white;
-    }
-
-    .product-title {
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .product-card {
-      text-align: center;
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 15px;
-      border-radius: 10px;
-      background-color: rgba(255,255,255,0.02);
-      width: 100%;
-    }
-
-    .product-image {
-      width: 100%;
-      height: 100px;
-      background-size: cover;
-      background-position: center;
-      border-radius: 8px;
-      margin-bottom: 10px;
+      text-shadow: 2px 2px 0 #000;
+      z-index: 10;
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo" onclick="goHome()">Elevate</div>
-    <div class="nav-buttons">
-      <button onclick="showSignup()">Home</button>
-      <button onclick="showCategories()">Explore</button>
-    </div>
-  </header>
-
-  <div class="tagline" id="tagline">
-    Discover more.<br>
-    Buy smart.<br>
-    Elevate your shopping experience.
-  </div>
-
-  <div class="categories" id="categoryList" style="display: none"></div>
-  <div class="sub-categories" id="subCategoryList" style="display: none"></div>
-  <div class="products" id="productList" style="display: none"></div>
-
-  <div class="form-box" id="signupForm" style="display: none">
-    <input type="text" placeholder="Username" />
-    <input type="email" placeholder="Email" />
-    <input type="password" placeholder="Password" />
-    <button onclick="showLogin()">Sign Up</button>
-    <small>Already have an account? <a onclick="showLogin()">Login</a></small>
-  </div>
-
-  <div class="form-box" id="loginForm" style="display: none">
-    <input type="email" placeholder="Email" />
-    <input type="password" placeholder="Password" />
-    <button>Login</button>
-  </div>
+  <div id="score">Score: 0</div>
+  <canvas id="game"></canvas>
 
   <script>
-  const storeData = {
-    Electronics: {
-      Laptops: [
-        { name: 'MacBook Pro', image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80' },
-        { name: 'Dell XPS 13', image: 'https://unsplash.com/photos/a-laptop-computer-sitting-on-top-of-a-table-E1SduZ1w8vs' },
-        { name: 'HP Spectre x360', image: 'https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?auto=format&fit=crop&w=800&q=80' },
-        { name: 'Lenovo ThinkPad', image: 'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&w=800&q=80' }
-      ]
-    },
-    Fashion: {
-      Shirts: [
-        { name: 'Slim Fit Shirt', image: 'https://source.unsplash.com/300x200/?shirt' },
-        { name: 'Flannel Shirt', image: 'https://source.unsplash.com/300x200/?flannel' },
-        { name: 'Casual T-Shirt', image: 'https://source.unsplash.com/300x200/?tshirt' },
-        { name: 'Graphic Tee', image: 'https://source.unsplash.com/300x200/?graphic,tee' }
-      ]
+    const canvas = document.getElementById("game");
+    const ctx = canvas.getContext("2d");
+    const scoreEl = document.getElementById("score");
+
+    // Set canvas size to window size
+    function resizeCanvas() {
+      canvas.width = 400;
+      canvas.height = 600;
     }
-  };
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
 
-  document.body.addEventListener('mousemove', (e) => {
-    document.body.style.setProperty('--x', `${e.clientX}px`);
-    document.body.style.setProperty('--y', `${e.clientY}px`);
-  });
+    let frames = 0;
+    let score = 0;
+    const gravity = 0.25;
+    const jump = 5;
 
-  function saveState(state, data = {}) {
-    localStorage.setItem('elevate_view', JSON.stringify({ state, ...data }));
-  }
+    const bird = {
+      x: 60,
+      y: 150,
+      width: 34,
+      height: 24,
+      velocity: 0,
 
-  function loadState() {
-    const saved = JSON.parse(localStorage.getItem('elevate_view'));
-    if (!saved) return goHome();
-    switch (saved.state) {
-      case 'signup': return showSignup();
-      case 'login': return showLogin();
-      case 'categories': return showCategories();
-      case 'subcategories': return showSubCategories(saved.category);
-      case 'products': return showProducts(saved.category, saved.subCategory);
-      default: return goHome();
+      draw() {
+        ctx.fillStyle = "yellow";
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+      },
+
+      flap() {
+        this.velocity = -jump;
+      },
+
+      update() {
+        this.velocity += gravity;
+        this.y += this.velocity;
+
+        if (this.y + this.height > canvas.height) {
+          this.y = canvas.height - this.height;
+          resetGame();
+        }
+      }
+    };
+
+    const pipes = [];
+    const pipeWidth = 60;
+    const pipeGap = 150;
+
+    function spawnPipe() {
+      const top = Math.random() * (canvas.height - pipeGap - 100) + 20;
+      pipes.push({ x: canvas.width, top, bottom: canvas.height - (top + pipeGap) });
     }
-  }
 
-  function goHome() {
-    ['categoryList','subCategoryList','productList','signupForm','loginForm'].forEach(id => document.getElementById(id).style.display = 'none');
-    document.getElementById('tagline').style.display = 'block';
-    saveState('home');
-  }
+    function drawPipes() {
+      ctx.fillStyle = "#228B22";
+      pipes.forEach(pipe => {
+        ctx.fillRect(pipe.x, 0, pipeWidth, pipe.top);
+        ctx.fillRect(pipe.x, pipe.top + pipeGap, pipeWidth, pipe.bottom);
+      });
+    }
 
-  function hideTagline() {
-    document.getElementById('tagline').style.display = 'none';
-  }
+    function updatePipes() {
+      pipes.forEach(pipe => {
+        pipe.x -= 2;
 
-  function showSignup() {
-    goHome(); hideTagline();
-    document.getElementById('signupForm').style.display = 'flex';
-    saveState('signup');
-  }
+        if (pipe.x + pipeWidth === Math.floor(bird.x)) {
+          score++;
+          scoreEl.textContent = "Score: " + score;
+        }
 
-  function showLogin() {
-    goHome(); hideTagline();
-    document.getElementById('loginForm').style.display = 'flex';
-    saveState('login');
-  }
+        if (
+          bird.x < pipe.x + pipeWidth &&
+          bird.x + bird.width > pipe.x &&
+          (bird.y < pipe.top || bird.y + bird.height > pipe.top + pipeGap)
+        ) {
+          resetGame();
+        }
+      });
 
-  function showCategories() {
-    goHome(); hideTagline();
-    const container = document.getElementById('categoryList');
-    container.innerHTML = '';
-    Object.keys(storeData).forEach(category => {
-      const a = document.createElement('a');
-      a.innerText = category;
-      a.onclick = () => showSubCategories(category);
-      container.appendChild(a);
+      if (pipes.length && pipes[0].x + pipeWidth < 0) {
+        pipes.shift();
+      }
+
+      if (frames % 90 === 0) {
+        spawnPipe();
+      }
+    }
+
+    function resetGame() {
+      bird.y = 150;
+      bird.velocity = 0;
+      pipes.length = 0;
+      score = 0;
+      scoreEl.textContent = "Score: 0";
+    }
+
+    function gameLoop() {
+      frames++;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      bird.update();
+      bird.draw();
+
+      updatePipes();
+      drawPipes();
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    // Controls
+    function flapBird() {
+      bird.flap();
+    }
+
+    document.addEventListener("keydown", e => {
+      if (e.code === "Space") flapBird();
     });
-    container.style.display = 'grid';
-    saveState('categories');
-  }
 
-  function showSubCategories(category) {
-    goHome(); hideTagline();
-    const container = document.getElementById('subCategoryList');
-    container.innerHTML = '';
-    Object.keys(storeData[category]).forEach(sub => {
-      const a = document.createElement('a');
-      a.innerText = sub;
-      a.onclick = () => showProducts(category, sub);
-      container.appendChild(a);
-    });
-    container.style.display = 'grid';
-    saveState('subcategories', { category });
-  }
+    canvas.addEventListener("click", flapBird);
+    canvas.addEventListener("touchstart", flapBird);
 
-  function showProducts(category, subCategory) {
-    goHome(); hideTagline();
-    const container = document.getElementById('productList');
-    container.innerHTML = '';
-    storeData[category][subCategory].forEach(prod => {
-      const div = document.createElement('div');
-      div.classList.add('product-card');
-
-      const img = document.createElement('div');
-      img.classList.add('product-image');
-      img.style.backgroundImage = `url('${prod.image}')`;
-
-      const title = document.createElement('div');
-      title.classList.add('product-title');
-      title.innerText = prod.name;
-
-      div.appendChild(img);
-      div.appendChild(title);
-      container.appendChild(div);
-    });
-    container.style.display = 'grid';
-    saveState('products', { category, subCategory });
-  }
-
-  // Load previous state on page load
-  window.onload = loadState;
-</script>
+    // Start
+    gameLoop();
+  </script>
+</body>
+</html>
