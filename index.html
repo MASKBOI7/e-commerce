@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Flappy Bird - Optimized</title>
+  <title>Flappy Bird - Simple Texture</title>
   <style>
     html, body {
       margin: 0;
@@ -45,91 +45,92 @@
     let frames = 0, score = 0, started = false;
     const pipes = [];
 
-    const sprite = new Image();
-    sprite.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAcCAYAAACayJ2fAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAClUlEQVRoge2Yz0sUYRTGf8fZcSJkMpGUiBIb2rC4Ag0EtLFwoggoWgkcBCqQoEoQkgoiRYCAdJgRBkEScM8dJqwkseP9WbvefX3P4nvmC+3f3enPOnJmd+dOaZgLBZrOFfpZoDsKWA1awK+xTwCzgXqApUHlhbLPgK+Bv4LnzM65W3Df4OHkNuRmqG0Wr1h1GAh+Ao2cN6lFf+Nus6ep+nWeR+iSeMZ1bZHKpV8rwLDHQ2SOa3Z9BniU7Gn3J1Pdn0ldRJW5YzpvQFxFc9aSZq8x61HhEVY3dzyRJ8uSXsHl2G11bObS9mP2hdiAboWuCy8Cx4Aw9xJ7QemTwcegH7YEr1uv2q9wGVgLzGZK9N1x4GdcBVYhGJzHhGBJpoBxDqIsfNdg2eBfC2ix00ZsUgcbJUm49Xk3RxKQzPpZm2H5m9E6sCN50hYqKPZFLvOThF/J3RBKrxAsvjHv0J3xJmN6PhI/z02Vma5tEZxTT1jY1iNp3TNk5q9XLgFzGLrH0OjGdsO+ZuPcs+5EYi9VBmYAmW7XGQ8a3xwBzJNWqLRa3yZCvqjdhAfoOdJgxbGecYYB3wX3q2/dfsbX+mMALzi9uowAAAAASUVORK5CYII=";
-
-    sprite.onload = () => {
-      const bird = {
-        x: 60, y: 150, width: 40, height: 28, velocity: 0, frame: 0,
-        draw() {
-          const frameX = this.frame * this.width;
-          ctx.drawImage(sprite, frameX, 0, this.width, this.height, this.x, this.y, this.width, this.height);
-        },
-        flap() {
-          this.velocity = -JUMP;
-        },
-        update() {
-          this.velocity += GRAVITY;
-          this.y += this.velocity;
-          if (this.y + this.height >= canvas.height) {
-            this.y = canvas.height - this.height;
-            resetGame();
-          }
-          if (frames % 5 === 0) this.frame = (this.frame + 1) % 3;
-        }
-      };
-
-      function spawnPipe() {
-        const top = Math.floor(Math.random() * (canvas.height - PIPE_GAP - 100)) + 20;
-        pipes.push({ x: canvas.width, top, bottom: canvas.height - (top + PIPE_GAP) });
-      }
-
-      function drawPipes() {
-        ctx.fillStyle = "#228B22";
-        pipes.forEach(pipe => {
-          ctx.fillRect(pipe.x, 0, PIPE_WIDTH, pipe.top);
-          ctx.fillRect(pipe.x, pipe.top + PIPE_GAP, PIPE_WIDTH, pipe.bottom);
-        });
-      }
-
-      function updatePipes() {
-        pipes.forEach(pipe => {
-          pipe.x -= 2;
-          if (
-            bird.x < pipe.x + PIPE_WIDTH && bird.x + bird.width > pipe.x &&
-            (bird.y < pipe.top || bird.y + bird.height > pipe.top + PIPE_GAP)
-          ) resetGame();
-          if (pipe.x + PIPE_WIDTH === Math.floor(bird.x)) scoreEl.textContent = `Score: ${++score}`;
-        });
-        if (pipes.length && pipes[0].x + PIPE_WIDTH < 0) pipes.shift();
-        if (frames % 100 === 0) spawnPipe();
-      }
-
-      function resetGame() {
-        bird.y = 150;
-        bird.velocity = 0;
-        pipes.length = 0;
-        score = 0;
-        scoreEl.textContent = "Score: 0";
-        started = false;
-      }
-
-      function gameLoop() {
-        frames++;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        if (started) {
-          bird.update();
-          updatePipes();
-        }
-        bird.draw();
-        drawPipes();
-        requestAnimationFrame(gameLoop);
-      }
-
-      function flapBird() {
-        bird.flap();
-        if (!started) {
-          started = true;
-          score = 0;
-          pipes.length = 0;
+    const bird = {
+      x: 60,
+      y: 150,
+      width: 30,
+      height: 30,
+      velocity: 0,
+      color: "#FFD700", // yellow like flappy bird
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2);
+        ctx.fill();
+      },
+      flap() {
+        this.velocity = -JUMP;
+      },
+      update() {
+        this.velocity += GRAVITY;
+        this.y += this.velocity;
+        if (this.y + this.height >= canvas.height) {
+          this.y = canvas.height - this.height;
+          resetGame();
         }
       }
-
-      document.addEventListener("keydown", e => { if (e.code === "Space") flapBird(); });
-      canvas.addEventListener("click", flapBird);
-      canvas.addEventListener("touchstart", flapBird);
-      gameLoop();
     };
+
+    function spawnPipe() {
+      const top = Math.floor(Math.random() * (canvas.height - PIPE_GAP - 100)) + 20;
+      pipes.push({ x: canvas.width, top, bottom: canvas.height - (top + PIPE_GAP) });
+    }
+
+    function drawPipes() {
+      ctx.fillStyle = "#228B22";
+      pipes.forEach(pipe => {
+        ctx.fillRect(pipe.x, 0, PIPE_WIDTH, pipe.top);
+        ctx.fillRect(pipe.x, pipe.top + PIPE_GAP, PIPE_WIDTH, pipe.bottom);
+      });
+    }
+
+    function updatePipes() {
+      pipes.forEach(pipe => {
+        pipe.x -= 2;
+        if (
+          bird.x < pipe.x + PIPE_WIDTH && bird.x + bird.width > pipe.x &&
+          (bird.y < pipe.top || bird.y + bird.height > pipe.top + PIPE_GAP)
+        ) resetGame();
+        if (pipe.x + PIPE_WIDTH === Math.floor(bird.x)) scoreEl.textContent = `Score: ${++score}`;
+      });
+      if (pipes.length && pipes[0].x + PIPE_WIDTH < 0) pipes.shift();
+      if (frames % 100 === 0) spawnPipe();
+    }
+
+    function resetGame() {
+      bird.y = 150;
+      bird.velocity = 0;
+      pipes.length = 0;
+      score = 0;
+      scoreEl.textContent = "Score: 0";
+      started = false;
+    }
+
+    function gameLoop() {
+      frames++;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (started) {
+        bird.update();
+        updatePipes();
+      }
+      bird.draw();
+      drawPipes();
+      requestAnimationFrame(gameLoop);
+    }
+
+    function flapBird() {
+      bird.flap();
+      if (!started) {
+        started = true;
+        score = 0;
+        pipes.length = 0;
+      }
+    }
+
+    document.addEventListener("keydown", e => { if (e.code === "Space") flapBird(); });
+    canvas.addEventListener("click", flapBird);
+    canvas.addEventListener("touchstart", flapBird);
+    gameLoop();
   </script>
 </body>
 </html>
