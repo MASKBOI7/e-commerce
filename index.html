@@ -84,7 +84,7 @@
       z-index: 1;
     }
 
-    .categories, .products {
+    .categories, .sub-categories, .products {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 30px;
@@ -97,14 +97,14 @@
       font-size: 16px;
     }
 
-    .categories a, .products div {
+    .categories a, .sub-categories a, .products div {
       color: white;
       text-decoration: none;
       transition: color 0.3s, text-shadow 0.3s;
       cursor: pointer;
     }
 
-    .categories a:hover, .products div:hover {
+    .categories a:hover, .sub-categories a:hover, .products div:hover {
       color: white;
       text-shadow: 0 0 5px white;
     }
@@ -183,27 +183,10 @@
   </div>
 
   <div class="categories" id="categoryList" style="display: none">
-    <a onclick="showProducts('Clothing')">Clothing</a>
-    <a onclick="showProducts('Appliances')">Appliances</a>
-    <a onclick="showProducts('Electronics')">Electronics</a>
-    <a onclick="showProducts('Books')">Books</a>
-    <a onclick="showProducts('Beauty')">Beauty</a>
-    <a onclick="showProducts('Grocery')">Grocery</a>
-    <a onclick="showProducts('Mobiles')">Mobiles</a>
-    <a onclick="showProducts('Laptops')">Laptops</a>
-    <a onclick="showProducts('Toys')">Toys</a>
-    <a onclick="showProducts('Shoes')">Shoes</a>
-    <a onclick="showProducts('Home Decor')">Home Decor</a>
-    <a onclick="showProducts('Fitness')">Fitness</a>
-    <a onclick="showProducts('Gaming')">Gaming</a>
-    <a onclick="showProducts('Stationery')">Stationery</a>
-    <a onclick="showProducts('Furniture')">Furniture</a>
-    <a onclick="showProducts('Pet Supplies')">Pet Supplies</a>
-    <a onclick="showProducts('Watches')">Watches</a>
-    <a onclick="showProducts('Jewelry')">Jewelry</a>
-    <a onclick="showProducts('Cameras')">Cameras</a>
-    <a onclick="showProducts('Bags')">Bags</a>
+    <a onclick="showSubCategories('Electronics')">Electronics</a>
   </div>
+
+  <div class="sub-categories" id="subCategoryList" style="display: none"></div>
 
   <div class="products" id="productList" style="display: none"></div>
 
@@ -222,6 +205,16 @@
   </div>
 
   <script>
+    const electronicsSub = ['Laptops', 'Mobiles', 'TVs', 'Monitors'];
+    const productsData = {
+      'Electronics': {
+        'Laptops': Array.from({ length: 40 }, (_, i) => `Laptop ${i+1}`),
+        'Mobiles': Array.from({ length: 40 }, (_, i) => `Mobile Phone ${i+1}`),
+        'TVs': Array.from({ length: 40 }, (_, i) => `Television ${i+1}`),
+        'Monitors': Array.from({ length: 40 }, (_, i) => `Monitor ${i+1}`),
+      }
+    };
+
     document.body.addEventListener('mousemove', (e) => {
       document.body.style.setProperty('--x', `${e.clientX}px`);
       document.body.style.setProperty('--y', `${e.clientY}px`);
@@ -233,9 +226,11 @@
 
     function goHome() {
       document.getElementById('categoryList').style.display = 'none';
+      document.getElementById('subCategoryList').style.display = 'none';
       document.getElementById('productList').style.display = 'none';
       document.getElementById('signupForm').style.display = 'none';
       document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('tagline').style.display = 'block';
     }
 
     function showSignup() {
@@ -256,45 +251,43 @@
       document.getElementById('categoryList').style.display = 'grid';
     }
 
-    function showProducts(category) {
+    function showSubCategories(category) {
+      goHome();
+      hideTagline();
+      const container = document.getElementById('subCategoryList');
+      container.innerHTML = '';
+      const subs = Object.keys(productsData[category]);
+      subs.forEach(sub => {
+        const a = document.createElement('a');
+        a.innerText = sub;
+        a.onclick = () => showProducts(category, sub);
+        container.appendChild(a);
+      });
+      container.style.display = 'grid';
+    }
+
+    function showProducts(category, subCategory) {
       goHome();
       hideTagline();
       const container = document.getElementById('productList');
       container.innerHTML = '';
-
-      const electronicsNames = [
-        "Samsung Galaxy S22", "Apple MacBook Pro", "Sony Bravia 55\" TV", "Dell XPS 13 Laptop",
-        "Canon EOS R5 Camera", "Lenovo Legion Gaming Laptop", "LG UltraFine Monitor", "Asus ROG Phone",
-        "HP Spectre x360", "OnePlus 12", "Xiaomi Mi TV 5X", "Samsung Odyssey Monitor",
-        "Apple iPhone 15", "Acer Predator Helios", "Google Pixel 8", "Sony Alpha a6400",
-        "MSI Gaming Laptop", "Realme Smart TV", "Nikon Z6", "Nothing Phone 2"
-      ];
-
-      for (let i = 1; i <= 20; i++) {
+      const items = productsData[category][subCategory];
+      items.forEach((name, i) => {
         const div = document.createElement('div');
         div.classList.add('product-card');
 
         const img = document.createElement('div');
         img.classList.add('product-image');
+        img.style.backgroundImage = `url('https://source.unsplash.com/300x200/?${subCategory},product&sig=${i}')`;
 
         const title = document.createElement('div');
         title.classList.add('product-title');
-
-        if (category === 'Clothing') {
-          img.style.backgroundImage = `url('https://source.unsplash.com/300x200/?clothing&sig=${i}')`;
-          title.innerText = `Top Clothing Product ${i}`;
-        } else if (category === 'Electronics') {
-          img.style.backgroundImage = `url('https://source.unsplash.com/300x200/?electronics,gadget&sig=${i}')`;
-          title.innerText = electronicsNames[i - 1] || `Electronics Product ${i}`;
-        } else {
-          img.style.backgroundImage = `url('https://source.unsplash.com/300x200/?${category}&sig=${i}')`;
-          title.innerText = `${category} Product ${i}`;
-        }
+        title.innerText = name;
 
         div.appendChild(img);
         div.appendChild(title);
         container.appendChild(div);
-      }
+      });
       container.style.display = 'grid';
     }
   </script>
