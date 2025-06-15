@@ -182,12 +182,8 @@
     Elevate your shopping experience.
   </div>
 
-  <div class="categories" id="categoryList" style="display: none">
-    <a onclick="showSubCategories('Electronics')">Electronics</a>
-  </div>
-
+  <div class="categories" id="categoryList" style="display: none"></div>
   <div class="sub-categories" id="subCategoryList" style="display: none"></div>
-
   <div class="products" id="productList" style="display: none"></div>
 
   <div class="form-box" id="signupForm" style="display: none">
@@ -205,14 +201,19 @@
   </div>
 
   <script>
-    const productsData = {
-      'Electronics': {
-        'Laptops': Array.from({ length: 40 }, (_, i) => `Laptop ${i+1}`),
-        'Mobiles': Array.from({ length: 40 }, (_, i) => `Mobile ${i+1}`),
-        'Headphones': Array.from({ length: 40 }, (_, i) => `Headphone ${i+1}`),
-        'Cameras': Array.from({ length: 40 }, (_, i) => `Camera ${i+1}`)
+    const productsData = {};
+    const categories = [
+      'Electronics', 'Fashion', 'Home', 'Beauty', 'Sports', 'Toys', 'Books', 'Groceries', 'Health', 'Automotive',
+      'Office', 'Garden', 'Jewelry', 'Shoes', 'Watches', 'Music', 'Pets', 'Travel', 'Tools', 'Gaming'
+    ];
+
+    categories.forEach(cat => {
+      productsData[cat] = {};
+      for (let i = 1; i <= 20; i++) {
+        const sub = `Sub-${i}`;
+        productsData[cat][sub] = Array.from({ length: 40 }, (_, j) => `${cat} ${sub} Product ${j+1}`);
       }
-    };
+    });
 
     document.body.addEventListener('mousemove', (e) => {
       document.body.style.setProperty('--x', `${e.clientX}px`);
@@ -247,7 +248,15 @@
     function showCategories() {
       goHome();
       hideTagline();
-      document.getElementById('categoryList').style.display = 'grid';
+      const container = document.getElementById('categoryList');
+      container.innerHTML = '';
+      categories.forEach(category => {
+        const a = document.createElement('a');
+        a.innerText = category;
+        a.onclick = () => showSubCategories(category);
+        container.appendChild(a);
+      });
+      container.style.display = 'grid';
     }
 
     function showSubCategories(category) {
