@@ -205,13 +205,12 @@
   </div>
 
   <script>
-    const electronicsSub = ['Laptops', 'Mobiles', 'TVs', 'Monitors'];
     const productsData = {
       'Electronics': {
         'Laptops': Array.from({ length: 40 }, (_, i) => `Laptop ${i+1}`),
-        'Mobiles': Array.from({ length: 40 }, (_, i) => `Mobile Phone ${i+1}`),
-        'TVs': Array.from({ length: 40 }, (_, i) => `Television ${i+1}`),
-        'Monitors': Array.from({ length: 40 }, (_, i) => `Monitor ${i+1}`),
+        'Mobiles': Array.from({ length: 40 }, (_, i) => `Mobile ${i+1}`),
+        'Headphones': Array.from({ length: 40 }, (_, i) => `Headphone ${i+1}`),
+        'Cameras': Array.from({ length: 40 }, (_, i) => `Camera ${i+1}`)
       }
     };
 
@@ -220,10 +219,6 @@
       document.body.style.setProperty('--y', `${e.clientY}px`);
     });
 
-    function hideTagline() {
-      document.getElementById('tagline').style.display = 'none';
-    }
-
     function goHome() {
       document.getElementById('categoryList').style.display = 'none';
       document.getElementById('subCategoryList').style.display = 'none';
@@ -231,6 +226,10 @@
       document.getElementById('signupForm').style.display = 'none';
       document.getElementById('loginForm').style.display = 'none';
       document.getElementById('tagline').style.display = 'block';
+    }
+
+    function hideTagline() {
+      document.getElementById('tagline').style.display = 'none';
     }
 
     function showSignup() {
