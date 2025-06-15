@@ -5,6 +5,8 @@
   <title>Dashboard</title>
   <!-- ✅ Bangers Font -->
   <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet" />
+  <!-- ✅ Icon Support -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <style>
     :root {
       --bg-color: black;
@@ -124,16 +126,15 @@
       background: var(--button-bg);
       color: var(--button-text);
       border: none;
-      padding: 12px 20px;
-      font-size: 18px;
-      font-family: 'Bangers', cursive;
-      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 24px;
+      border-radius: 50%;
       cursor: pointer;
-      transition: background 0.3s ease, color 0.3s ease, transform 0.2s;
+      transition: transform 0.2s, background 0.3s ease, color 0.3s ease;
     }
 
     .dark-toggle:hover {
-      transform: scale(1.1);
+      transform: scale(1.2);
       background-color: var(--hover-bg);
       color: var(--hover-text);
     }
@@ -155,7 +156,9 @@
     </div>
   </div>
 
-  <button class="dark-toggle" onclick="toggleMode()">Toggle Mode</button>
+  <button class="dark-toggle" onclick="toggleMode()">
+    <i id="mode-icon" class="fas fa-moon"></i>
+  </button>
 
   <script>
     const bg = document.getElementById('bg-gradient');
@@ -166,7 +169,17 @@
     });
 
     function toggleMode() {
-      document.body.classList.toggle('light-mode');
+      const body = document.body;
+      const icon = document.getElementById('mode-icon');
+      body.classList.toggle('light-mode');
+
+      if (body.classList.contains('light-mode')) {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+      } else {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+      }
     }
   </script>
 </body>
