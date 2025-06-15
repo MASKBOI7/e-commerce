@@ -112,6 +112,7 @@
       backdrop-filter: blur(5px);
       width: 90%;
       max-width: 400px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.08);
     }
 
     .login-box h2, .signup-box h2 {
@@ -133,7 +134,8 @@
 
     .google-btn { background: white; color: black; }
     .apple-btn { background: black; color: white; border: 1px solid white; }
-    .email-inputs input {
+
+    .email-inputs input, .signup-inputs input {
       width: 100%;
       margin: 10px 0;
       padding: 12px;
@@ -193,10 +195,12 @@
   <div class="signup-page" id="signup-screen">
     <div class="signup-box">
       <h2>Create an Account</h2>
-      <input type="text" placeholder="Username">
-      <input type="email" placeholder="Email">
-      <input type="password" placeholder="Password">
-      <button class="google-btn">Signup</button>
+      <div class="signup-inputs">
+        <input type="text" placeholder="Username">
+        <input type="email" placeholder="Email">
+        <input type="password" placeholder="Password">
+        <button class="google-btn">Signup</button>
+      </div>
       <div class="login-footer">
         Already have an account? <a onclick="showLogin()">Login</a>
       </div>
