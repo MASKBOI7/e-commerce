@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto+Mono&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: black;
+    }
+
+    #bg-gradient {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.1), transparent 40%);
+      z-index: 0;
+      transition: background-position 0.05s ease;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .search-bar {
+      position: absolute;
+      top: 30px;
+      width: 80%;
+      max-width: 600px;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 14px 20px;
+      font-size: 16px;
+      font-family: 'Roboto Mono', monospace;
+      border: none;
+      border-radius: 10px;
+      outline: none;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .tagline {
+      font-size: 32px;
+      margin-bottom: 40px;
+      font-weight: 600;
+      color: #fff;
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+    }
+
+    .button-container {
+      text-align: center;
+    }
+
+    .action-button {
+      background-color: white;
+      color: black;
+      padding: 14px 32px;
+      margin: 15px;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+      font-weight: 600;
+    }
+
+    .action-button:hover {
+      transform: scale(1.1);
+      background-color: red;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="bg-gradient"></div>
+
+  <div class="content">
+    <div class="search-bar">
+      <input type="text" placeholder="Search for items...">
+    </div>
+
+    <div class="tagline">Discover What Moves You</div>
+
+    <div class="button-container">
+      <button class="action-button">Explore</button>
+      <button class="action-button">Browse</button>
+    </div>
+  </div>
+
+  <script>
+    const bg = document.getElementById('bg-gradient');
+    document.addEventListener('mousemove', e => {
+      const x = e.clientX;
+      const y = e.clientY;
+      bg.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.1), transparent 40%)`;
+    });
+  </script>
+
+</body>
+</html>
