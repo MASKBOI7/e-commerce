@@ -1,189 +1,61 @@
+<!-- GTA VI-style open world basic HTML5 setup -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Flappy Bird - With Simple Bird Texture</title>
+  <title>GTA VI Style Game</title>
   <style>
     html, body {
       margin: 0;
       overflow: hidden;
-      background: #70c5ce;
-    }
-    #score {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 32px;
-      font-weight: bold;
-      color: white;
-      text-shadow: 2px 2px 0 #000;
-      z-index: 10;
+      background: #444;
     }
     canvas {
       display: block;
-      margin: auto;
-      background: #70c5ce;
+      background: #88a;
     }
   </style>
 </head>
 <body>
-  <div id="score">Score: 0</div>
-  <canvas id="game" width="400" height="600"></canvas>
-
+  <canvas id="game" width="800" height="600"></canvas>
   <script>
     const canvas = document.getElementById("game");
     const ctx = canvas.getContext("2d");
-    const scoreEl = document.getElementById("score");
 
-    const GRAVITY = 0.25;
-    const JUMP = 4.6;
-    const PIPE_WIDTH = 60;
-    const PIPE_GAP = 130;
-
-    let frames = 0, score = 0, started = false;
-    const pipes = [];
-
-    const bird = {
-      x: 60,
-      y: 150,
-      width: 30,
-      height: 30,
-      velocity: 0,
+    // Player setup
+    const player = {
+      x: 400,
+      y: 300,
+      size: 30,
+      color: "red",
+      speed: 3,
       draw() {
-        ctx.fillStyle = "#FFD700";
-        ctx.beginPath();
-        ctx.arc(this.x + 15, this.y + 15, 15, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = "orange";
-        ctx.beginPath();
-        ctx.moveTo(this.x + 30, this.y + 15);
-        ctx.lineTo(this.x + 36, this.y + 12);
-        ctx.lineTo(this.x + 36, this.y + 18);
-        ctx.closePath();
-        ctx.fill();
-
-        ctx.fillStyle = "#FFA500";
-        ctx.beginPath();
-        ctx.ellipse(this.x + 10, this.y + 15, 6, 4, 0, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = "white";
-        ctx.beginPath();
-        ctx.arc(this.x + 20, this.y + 10, 4, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = "black";
-        ctx.beginPath();
-        ctx.arc(this.x + 21, this.y + 10, 2, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = "#FFA500";
-        ctx.beginPath();
-        ctx.moveTo(this.x, this.y + 15);
-        ctx.lineTo(this.x - 6, this.y + 10);
-        ctx.lineTo(this.x - 6, this.y + 20);
-        ctx.closePath();
-        ctx.fill();
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x - this.size/2, this.y - this.size/2, this.size, this.size);
       },
-      flap() {
-        this.velocity = -JUMP;
-      },
-      update() {
-        this.velocity += GRAVITY;
-        this.y += this.velocity;
-        if (this.y + this.height >= canvas.height) {
-          this.y = canvas.height - this.height;
-          resetGame();
-        }
+      update(keys) {
+        if (keys["ArrowUp"]) this.y -= this.speed;
+        if (keys["ArrowDown"]) this.y += this.speed;
+        if (keys["ArrowLeft"]) this.x -= this.speed;
+        if (keys["ArrowRight"]) this.x += this.speed;
       }
     };
 
-    function spawnPipe() {
-      const variation = Math.random();
-      let top;
-      const centerY = canvas.height / 2 - PIPE_GAP / 2;
-      if (variation < 0.7) {
-        top = centerY + (Math.random() * 60 - 30);
-      } else if (variation < 0.85) {
-        top = 30 + Math.random() * 60;
-      } else {
-        top = canvas.height - PIPE_GAP - 90 - Math.random() * 60;
-      }
-      pipes.push({ x: canvas.width, top, bottom: canvas.height - (top + PIPE_GAP) });
-    }
-
-    function drawPipes() {
-      ctx.fillStyle = "#228B22";
-      pipes.forEach(pipe => {
-        ctx.beginPath();
-        ctx.moveTo(pipe.x, 0);
-        ctx.lineTo(pipe.x + PIPE_WIDTH / 2, pipe.top - 10);
-        ctx.lineTo(pipe.x + PIPE_WIDTH, 0);
-        ctx.lineTo(pipe.x + PIPE_WIDTH, pipe.top);
-        ctx.lineTo(pipe.x, pipe.top);
-        ctx.closePath();
-        ctx.fill();
-
-        const bY = pipe.top + PIPE_GAP;
-        ctx.beginPath();
-        ctx.moveTo(pipe.x, bY);
-        ctx.lineTo(pipe.x + PIPE_WIDTH, bY);
-        ctx.lineTo(pipe.x + PIPE_WIDTH, canvas.height);
-        ctx.lineTo(pipe.x + PIPE_WIDTH / 2, canvas.height - pipe.bottom + 10);
-        ctx.lineTo(pipe.x, canvas.height);
-        ctx.closePath();
-        ctx.fill();
-      });
-    }
-
-    function updatePipes() {
-      pipes.forEach(pipe => {
-        pipe.x -= 2;
-        if (
-          bird.x < pipe.x + PIPE_WIDTH && bird.x + bird.width > pipe.x &&
-          (bird.y < pipe.top || bird.y + bird.height > pipe.top + PIPE_GAP)
-        ) resetGame();
-        if (pipe.x + PIPE_WIDTH === Math.floor(bird.x)) scoreEl.textContent = `Score: ${++score}`;
-      });
-      if (pipes.length && pipes[0].x + PIPE_WIDTH < 0) pipes.shift();
-      if (frames % 100 === 0) spawnPipe();
-    }
-
-    function resetGame() {
-      bird.y = 150;
-      bird.velocity = 0;
-      pipes.length = 0;
-      score = 0;
-      scoreEl.textContent = "Score: 0";
-      started = false;
-    }
+    // Input tracking
+    const keys = {};
+    document.addEventListener("keydown", e => keys[e.key] = true);
+    document.addEventListener("keyup", e => keys[e.key] = false);
 
     function gameLoop() {
-      frames++;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      if (started) {
-        bird.update();
-        updatePipes();
-      }
-      bird.draw();
-      drawPipes();
+
+      player.update(keys);
+      player.draw();
+
       requestAnimationFrame(gameLoop);
     }
 
-    function flapBird() {
-      bird.flap();
-      if (!started) {
-        started = true;
-        score = 0;
-        pipes.length = 0;
-      }
-    }
-
-    document.addEventListener("keydown", e => { if (e.code === "Space") flapBird(); });
-    canvas.addEventListener("click", flapBird);
-    canvas.addEventListener("touchstart", flapBird);
     gameLoop();
   </script>
 </body>
