@@ -5,7 +5,7 @@
   <title>Dashboard</title>
   <!-- ✅ Bangers Font -->
   <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet" />
-  <!-- ✅ Icon Support -->
+  <!-- ✅ Font Awesome for Icons -->
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <style>
     :root {
@@ -52,7 +52,6 @@
       width: 100vw;
       height: 100vh;
       pointer-events: none;
-      background: radial-gradient(circle at center, rgba(255,255,255,0.1), transparent 40%);
       z-index: 0;
       transition: background-position 0.05s ease;
     }
@@ -162,15 +161,21 @@
 
   <script>
     const bg = document.getElementById('bg-gradient');
+    const icon = document.getElementById('mode-icon');
+
     document.addEventListener('mousemove', e => {
       const x = e.clientX;
       const y = e.clientY;
-      bg.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.1), transparent 40%)`;
+
+      const isLight = document.body.classList.contains('light-mode');
+
+      bg.style.background = isLight
+        ? `radial-gradient(circle at ${x}px ${y}px, rgba(0,0,0,0.08), transparent 40%)`
+        : `radial-gradient(circle at ${x}px ${y}px, rgba(0,0,0,0.4), transparent 40%)`;
     });
 
     function toggleMode() {
       const body = document.body;
-      const icon = document.getElementById('mode-icon');
       body.classList.toggle('light-mode');
 
       if (body.classList.contains('light-mode')) {
