@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Signup/Login</title>
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@900&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <title>My Site</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@900&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-color: black;
@@ -24,10 +24,10 @@
 
     html, body {
       height: 100%;
-      overflow: hidden;
       background: var(--bg-color);
       font-family: 'Rubik', sans-serif;
       color: var(--text-color);
+      overflow: hidden;
     }
 
     #bg-gradient {
@@ -38,7 +38,6 @@
       height: 100vh;
       pointer-events: none;
       z-index: 0;
-      transition: background-position 0.05s ease;
     }
 
     .screen {
@@ -58,6 +57,30 @@
       display: flex;
     }
 
+    h1, h2 {
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      background-color: var(--button-bg);
+      color: var(--button-text);
+      padding: 14px 24px;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
+      margin: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Rubik', sans-serif;
+    }
+
+    .btn:hover {
+      transform: scale(1.08);
+      background-color: var(--hover-bg);
+      color: var(--hover-text);
+    }
+
     .box {
       background: rgba(255,255,255,0.05);
       padding: 40px;
@@ -66,12 +89,6 @@
       width: 90%;
       max-width: 400px;
       box-shadow: 0 0 20px rgba(255, 255, 255, 0.08);
-    }
-
-    h2 {
-      margin-bottom: 20px;
-      font-size: 28px;
-      color: white;
     }
 
     input {
@@ -116,14 +133,29 @@
       text-decoration: none;
       cursor: pointer;
     }
+
+    .tagline {
+      font-size: 26px;
+      margin-bottom: 40px;
+      color: white;
+      max-width: 80%;
+    }
   </style>
 </head>
 <body>
 
   <div id="bg-gradient"></div>
 
+  <!-- Welcome Screen -->
+  <div class="screen active" id="welcome-screen">
+    <h1>Welcome to Elevate.</h1>
+    <p class="tagline">Discover more. Buy smart. Elevate your shopping experience.</p>
+    <button class="btn" onclick="showScreen('signup-screen')">Home</button>
+    <button class="btn">Explore</button>
+  </div>
+
   <!-- Signup Screen -->
-  <div class="screen active" id="signup-screen">
+  <div class="screen" id="signup-screen">
     <div class="box">
       <h2>Create Account</h2>
       <input id="username" type="text" placeholder="Username">
