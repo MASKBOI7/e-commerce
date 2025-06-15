@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Flappy Bird - Simple Texture</title>
+  <title>Flappy Bird - With Simple Bird Texture</title>
   <style>
     html, body {
       margin: 0;
@@ -51,11 +51,26 @@
       width: 30,
       height: 30,
       velocity: 0,
-      color: "#FFD700", // yellow like flappy bird
       draw() {
-        ctx.fillStyle = this.color;
+        // Body
+        ctx.fillStyle = "#FFD700"; // Yellow body
         ctx.beginPath();
-        ctx.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2);
+        ctx.arc(this.x + 15, this.y + 15, 15, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Beak
+        ctx.fillStyle = "orange";
+        ctx.beginPath();
+        ctx.moveTo(this.x + 30, this.y + 15);
+        ctx.lineTo(this.x + 36, this.y + 12);
+        ctx.lineTo(this.x + 36, this.y + 18);
+        ctx.closePath();
+        ctx.fill();
+
+        // Wing
+        ctx.fillStyle = "#FFA500";
+        ctx.beginPath();
+        ctx.ellipse(this.x + 10, this.y + 15, 6, 4, 0, 0, Math.PI * 2);
         ctx.fill();
       },
       flap() {
