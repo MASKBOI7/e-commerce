@@ -190,10 +190,10 @@
     <div class="signup-box">
       <h2>Create an Account</h2>
       <div class="signup-inputs">
-        <input type="text" placeholder="Username">
-        <input type="email" placeholder="Email">
-        <input type="password" placeholder="Password">
-        <button class="action-button">Signup</button>
+        <input id="signup-username" type="text" placeholder="Username">
+        <input id="signup-email" type="email" placeholder="Email">
+        <input id="signup-password" type="password" placeholder="Password">
+        <button class="action-button" onclick="validateSignup()">Signup</button>
       </div>
       <div class="login-footer">
         Already have an account? <a onclick="showLogin()">Login</a>
@@ -219,6 +219,33 @@
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('home-screen').style.display = 'none';
       document.getElementById('signup-screen').style.display = 'flex';
+    }
+
+    function validateSignup() {
+      const username = document.getElementById('signup-username').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const password = document.getElementById('signup-password').value.trim();
+
+      const usernameValid = username.length >= 3 && username.length <= 15;
+      const emailValid = email.includes('@') && email.endsWith('.com');
+      const passwordValid = password.length > 6 &&
+                            /[a-z]/.test(password) &&
+                            /[A-Z]/.test(password);
+
+      if (!usernameValid) {
+        alert("Username must be 3-15 characters.");
+        return;
+      }
+      if (!emailValid) {
+        alert("Email must include '@' and end with '.com'");
+        return;
+      }
+      if (!passwordValid) {
+        alert("Password must be >6 characters with at least 1 uppercase and 1 lowercase letter.");
+        return;
+      }
+
+      alert("Signup Successful!");
     }
   </script>
 </body>
