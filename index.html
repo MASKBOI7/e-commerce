@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <title>Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@900&display=swap" rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
   <style>
     :root {
       --bg-color: black;
@@ -132,9 +131,6 @@
       font-family: 'Rubik', sans-serif;
     }
 
-    .google-btn { background: white; color: black; }
-    .apple-btn { background: black; color: white; border: 1px solid white; }
-
     .email-inputs input, .signup-inputs input {
       width: 100%;
       margin: 10px 0;
@@ -178,12 +174,10 @@
   <div class="login-page" id="login-screen">
     <div class="login-box">
       <h2>Login to Continue</h2>
-      <button class="google-btn"><i class="fa-brands fa-google"></i> Login with Google</button>
-      <button class="apple-btn"><i class="fa-brands fa-apple"></i> Login with Apple</button>
       <div class="email-inputs">
         <input type="email" placeholder="Email">
         <input type="password" placeholder="Password">
-        <button class="google-btn">Login</button>
+        <button class="action-button">Login</button>
       </div>
       <div class="login-footer">
         Don’t have an account? <a onclick="showSignup()">Signup</a>
@@ -199,7 +193,7 @@
         <input type="text" placeholder="Username">
         <input type="email" placeholder="Email">
         <input type="password" placeholder="Password">
-        <button class="google-btn">Signup</button>
+        <button class="action-button">Signup</button>
       </div>
       <div class="login-footer">
         Already have an account? <a onclick="showLogin()">Login</a>
