@@ -4,14 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Elevate</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@900&display=swap" rel="stylesheet">
   <style>
-    body {
+    * {
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
-      background: black;
-      color: white;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Rubik', sans-serif;
+      background-color: black;
       overflow-x: hidden;
+      color: white;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,255,255,0.1), transparent 60%);
+      z-index: 0;
     }
 
     header {
@@ -19,13 +37,16 @@
       justify-content: space-between;
       align-items: center;
       padding: 20px;
+      position: relative;
+      z-index: 1;
     }
 
     .logo {
       font-size: 32px;
       font-weight: bold;
+      color: white;
       cursor: pointer;
-      transition: 0.3s;
+      transition: text-shadow 0.3s ease;
     }
 
     .logo:hover {
@@ -38,59 +59,87 @@
     }
 
     .nav-buttons button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 25px;
       background-color: white;
       color: black;
-      border: none;
-      padding: 10px 20px;
-      font-size: 16px;
       cursor: pointer;
-      transition: transform 0.2s, background-color 0.2s;
+      font-weight: bold;
+      transition: all 0.3s ease;
     }
 
     .nav-buttons button:hover {
-      transform: scale(1.05);
       background-color: red;
+      transform: scale(1.1);
       color: white;
     }
 
     .tagline {
       text-align: center;
-      margin-top: 50px;
-      font-size: 28px;
-      white-space: pre-line;
+      font-size: 36px;
+      margin: 50px 0 30px;
+      line-height: 1.5;
+      position: relative;
+      z-index: 1;
     }
 
-    .category-grid {
+    .categories, .products {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      padding: 50px;
-      text-align: center;
+      gap: 30px;
+      justify-items: center;
+      padding: 20px;
+      margin-top: 40px;
+      position: relative;
+      z-index: 1;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
     }
 
-    .category {
-      font-family: sans-serif;
-      font-size: 14px;
+    .categories a, .products div {
       color: white;
       text-decoration: none;
       transition: color 0.3s, text-shadow 0.3s;
+      cursor: pointer;
     }
 
-    .category:hover {
+    .categories a:hover, .products div:hover {
       color: white;
       text-shadow: 0 0 5px white;
     }
 
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 20px;
-      padding: 50px;
-      text-align: center;
+    .form-box {
+      max-width: 350px;
+      margin: 40px auto;
+      padding: 30px;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      font-size: 16px;
     }
 
-    .product {
-      font-size: 14px;
+    .form-box input {
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      font-family: 'Rubik', sans-serif;
+    }
+
+    .form-box button {
+      padding: 10px;
+      border: none;
+      border-radius: 15px;
+      background-color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .form-box button:hover {
+      background-color: red;
       color: white;
     }
   </style>
@@ -99,76 +148,100 @@
   <header>
     <div class="logo" onclick="goHome()">Elevate</div>
     <div class="nav-buttons">
-      <button onclick="goHome()">Home</button>
+      <button onclick="showSignup()">Home</button>
       <button onclick="showCategories()">Explore</button>
     </div>
   </header>
 
-  <div class="tagline" id="tagline">
-    Discover more.
-    Buy smart.
+  <div class="tagline">
+    Discover more.<br>
+    Buy smart.<br>
     Elevate your shopping experience.
   </div>
 
-  <div id="categoryContainer" class="category-grid" style="display: none;"></div>
-  <div id="productContainer" class="product-grid" style="display: none;"></div>
+  <div class="categories" id="categoryList" style="display: none">
+    <a onclick="showProducts('Clothing')">Clothing</a>
+    <a onclick="showProducts('Appliances')">Appliances</a>
+    <a onclick="showProducts('Electronics')">Electronics</a>
+    <a onclick="showProducts('Books')">Books</a>
+    <a onclick="showProducts('Beauty')">Beauty</a>
+    <a onclick="showProducts('Grocery')">Grocery</a>
+    <a onclick="showProducts('Mobiles')">Mobiles</a>
+    <a onclick="showProducts('Laptops')">Laptops</a>
+    <a onclick="showProducts('Toys')">Toys</a>
+    <a onclick="showProducts('Shoes')">Shoes</a>
+    <a onclick="showProducts('Home Decor')">Home Decor</a>
+    <a onclick="showProducts('Fitness')">Fitness</a>
+    <a onclick="showProducts('Gaming')">Gaming</a>
+    <a onclick="showProducts('Stationery')">Stationery</a>
+    <a onclick="showProducts('Furniture')">Furniture</a>
+    <a onclick="showProducts('Pet Supplies')">Pet Supplies</a>
+    <a onclick="showProducts('Watches')">Watches</a>
+    <a onclick="showProducts('Jewelry')">Jewelry</a>
+    <a onclick="showProducts('Cameras')">Cameras</a>
+    <a onclick="showProducts('Bags')">Bags</a>
+  </div>
+
+  <div class="products" id="productList" style="display: none"></div>
+
+  <div class="form-box" id="signupForm" style="display: none">
+    <input type="text" placeholder="Username" />
+    <input type="email" placeholder="Email" />
+    <input type="password" placeholder="Password" />
+    <button onclick="showLogin()">Sign Up</button>
+    <small>Already have an account? <a onclick="showLogin()">Login</a></small>
+  </div>
+
+  <div class="form-box" id="loginForm" style="display: none">
+    <input type="email" placeholder="Email" />
+    <input type="password" placeholder="Password" />
+    <button>Login</button>
+  </div>
 
   <script>
-    const categories = {
-      Clothing: ['Hoodies', 'T-shirts', 'Skirts', 'Jeans', 'Dresses', 'Sweatshirts', 'Jackets', 'Coats', 'Shorts', 'Caps', 'Shoes', 'Belts', 'Suits', 'Sarees', 'Tops', 'Blazers', 'Sweaters', 'Leggings', 'Formals', 'Ties'],
-      Electronics: ['Smartphones', 'Laptops', 'Headphones', 'Smartwatches', 'Cameras', 'Speakers', 'Monitors', 'Chargers', 'Power Banks', 'Keyboards', 'Mice', 'Drones', 'Projectors', 'Tablets', 'Game Consoles', 'Flash Drives', 'SSD', 'Webcams', 'Routers', 'Printers'],
-      Footwear: ['Sneakers', 'Sandals', 'Loafers', 'Formal Shoes', 'Flip Flops', 'Boots', 'Heels', 'Slippers', 'Running Shoes', 'Trainers', 'Wedges', 'Oxfords', 'Brogues', 'Mules', 'Derby Shoes', 'Chukkas', 'Espadrilles', 'Crocs', 'Slides', 'Plimsolls'],
-      Appliances: ['Refrigerators', 'Washing Machines', 'Microwaves', 'Air Conditioners', 'Heaters', 'Mixers', 'Toasters', 'Electric Kettles', 'Water Purifiers', 'Coffee Makers', 'Air Fryers', 'Blenders', 'Ovens', 'Dishwashers', 'Coolers', 'Rice Cookers', 'Iron Boxes', 'Hair Dryers', 'Vacuum Cleaners', 'Steamers'],
-      Furniture: ['Beds', 'Sofas', 'Chairs', 'Tables', 'Wardrobes', 'Bookshelves', 'TV Units', 'Desks', 'Recliners', 'Dining Tables', 'Coffee Tables', 'Shoe Racks', 'Cabinets', 'Stools', 'Benches', 'Ottomans', 'Dressers', 'Nightstands', 'Bean Bags', 'Cradles'],
-      Books: ['Novels', 'Textbooks', 'Comics', 'Magazines', 'Biographies', 'Fantasy', 'Mystery', 'Romance', 'Horror', 'Science', 'History', 'Self Help', 'Technology', 'Poetry', 'Religion', 'Travel', 'Cookbooks', 'Drama', 'Guides', 'Memoirs'],
-      Toys: ['Action Figures', 'Dolls', 'Cars', 'Building Sets', 'Board Games', 'Puzzles', 'Plush Toys', 'Kits', 'RC Toys', 'Educational Toys', 'Blocks', 'Musical Toys', 'Art Kits', 'Pretend Play', 'Craft Toys', 'Marbles', 'Yo-Yos', 'Trains', 'Robots', 'Tops'],
-      Sports: ['Cricket Bats', 'Footballs', 'Tennis Rackets', 'Basketballs', 'Yoga Mats', 'Dumbbells', 'Skates', 'Cycling Helmets', 'Skipping Ropes', 'Knee Pads', 'Track Suits', 'Sweatbands', 'Shin Guards', 'Water Bottles', 'Sports Bags', 'Volleyballs', 'Hockey Sticks', 'Baseballs', 'Badminton Rackets', 'Table Tennis'],
-      Beauty: ['Lipsticks', 'Foundations', 'Compacts', 'Blush', 'Eyeliners', 'Mascaras', 'Nail Paints', 'Face Washes', 'Shampoos', 'Conditioners', 'Hair Oils', 'Perfumes', 'Serums', 'Moisturizers', 'Sunscreens', 'Cleansers', 'Scrubs', 'Makeup Kits', 'Hair Colors', 'Face Masks'],
-      Accessories: ['Watches', 'Sunglasses', 'Backpacks', 'Wallets', 'Belts', 'Hats', 'Scarves', 'Gloves', 'Earrings', 'Bracelets', 'Rings', 'Necklaces', 'Chains', 'Brooches', 'Hair Bands', 'Keychains', 'Bags', 'Clutches', 'Cufflinks', 'Ties'],
-      Grocery: ['Rice', 'Wheat', 'Sugar', 'Salt', 'Spices', 'Vegetables', 'Fruits', 'Pulses', 'Oils', 'Tea', 'Coffee', 'Snacks', 'Biscuits', 'Juices', 'Milk', 'Eggs', 'Bread', 'Honey', 'Pickles', 'Sauces'],
-      Stationery: ['Pens', 'Pencils', 'Notebooks', 'Markers', 'Erasers', 'Sharpeners', 'Rulers', 'Folders', 'Paper Clips', 'Binders', 'Glue', 'Tape', 'Scissors', 'Calculators', 'Sketchbooks', 'Highlighters', 'Staplers', 'Punchers', 'Drawing Sheets', 'Inks'],
-      Music: ['Guitars', 'Keyboards', 'Drums', 'Microphones', 'Speakers', 'Amplifiers', 'Violins', 'DJ Mixers', 'Flutes', 'Trumpets', 'Headphones', 'Sound Cards', 'Cables', 'Picks', 'Tuners', 'Pedals', 'Stands', 'Metronomes', 'Bongos', 'Harmonicas'],
-      Gaming: ['Consoles', 'Controllers', 'Games', 'Headsets', 'Gaming Chairs', 'VR Sets', 'Graphics Cards', 'Cooling Pads', 'Monitors', 'Keyboards', 'Mice', 'Webcams', 'Cables', 'Power Supply', 'Storage Devices', 'Motherboards', 'Routers', 'Streaming Gear', 'Adapters', 'Mounts'],
-      Art: ['Paints', 'Brushes', 'Canvases', 'Easels', 'Palettes', 'Sketch Pads', 'Markers', 'Charcoal', 'Pencils', 'Acrylics', 'Watercolors', 'Pastels', 'Inks', 'Oil Paints', 'Scrapbooks', 'Glue', 'Rulers', 'Cutters', 'Frames', 'Art Kits'],
-      Health: ['Masks', 'Sanitizers', 'Thermometers', 'BP Monitors', 'Oximeters', 'Weighing Machines', 'Supplements', 'Medicines', 'Oils', 'Bandages', 'Creams', 'Syrups', 'Tablets', 'Tubes', 'Vitamins', 'Cough Drops', 'Sprays', 'Eye Drops', 'Toothpaste', 'Brushes'],
-      Travel: ['Luggage', 'Bags', 'Trolleys', 'Neck Pillows', 'Travel Kits', 'Adapters', 'Locks', 'Maps', 'Pouches', 'Backpacks', 'Tags', 'Jackets', 'Shoes', 'Tents', 'Sleeping Bags', 'Flasks', 'Compasses', 'Torch Lights', 'Travel Guides', 'Belts'],
-      Baby: ['Diapers', 'Wipes', 'Lotions', 'Powder', 'Shampoo', 'Soap', 'Oil', 'Milk Bottles', 'Pacifiers', 'Clothes', 'Shoes', 'Bibs', 'Bedding', 'Toys', 'Teethers', 'Walkers', 'Strollers', 'Car Seats', 'Bath Tubs', 'Caps'],
-      Pet: ['Food', 'Bowls', 'Leashes', 'Collars', 'Beds', 'Toys', 'Shampoo', 'Clothes', 'Cages', 'Litter Boxes', 'Grooming Tools', 'Medicines', 'Vitamins', 'Snacks', 'Blankets', 'Tick Remover', 'Brushes', 'Houses', 'Chew Toys', 'Treats']
-    };
+    document.body.addEventListener('mousemove', (e) => {
+      document.body.style.setProperty('--x', `${e.clientX}px`);
+      document.body.style.setProperty('--y', `${e.clientY}px`);
+    });
 
     function goHome() {
-      document.getElementById('tagline').style.display = 'block';
-      document.getElementById('categoryContainer').style.display = 'none';
-      document.getElementById('productContainer').style.display = 'none';
+      document.getElementById('categoryList').style.display = 'none';
+      document.getElementById('productList').style.display = 'none';
+      document.getElementById('signupForm').style.display = 'none';
+      document.getElementById('loginForm').style.display = 'none';
+    }
+
+    function showSignup() {
+      goHome();
+      document.getElementById('signupForm').style.display = 'flex';
+    }
+
+    function showLogin() {
+      goHome();
+      document.getElementById('loginForm').style.display = 'flex';
     }
 
     function showCategories() {
-      const container = document.getElementById('categoryContainer');
-      container.innerHTML = '';
-      Object.keys(categories).forEach(cat => {
-        const link = document.createElement('a');
-        link.textContent = cat;
-        link.className = 'category';
-        link.href = '#';
-        link.onclick = () => showProducts(cat);
-        container.appendChild(link);
-      });
-      document.getElementById('tagline').style.display = 'none';
-      container.style.display = 'grid';
-      document.getElementById('productContainer').style.display = 'none';
+      goHome();
+      document.getElementById('categoryList').style.display = 'grid';
     }
 
     function showProducts(category) {
-      const productContainer = document.getElementById('productContainer');
-      productContainer.innerHTML = '';
-      categories[category].forEach(product => {
+      goHome();
+      const list = [
+        'T-Shirts', 'Hoodies', 'Jackets', 'Jeans', 'Tops', 'Dresses', 'Shorts', 'Suits', 'Sweaters', 'Pants',
+        'Shirts', 'Tracksuits', 'Innerwear', 'Nightwear', 'Caps', 'Scarves', 'Shoes', 'Slippers', 'Sandals', 'Boots',
+        'Item21', 'Item22', 'Item23', 'Item24', 'Item25', 'Item26', 'Item27', 'Item28', 'Item29', 'Item30',
+        'Item31', 'Item32', 'Item33', 'Item34', 'Item35', 'Item36', 'Item37', 'Item38', 'Item39', 'Item40'
+      ];
+      const container = document.getElementById('productList');
+      container.innerHTML = '';
+      list.forEach(item => {
         const div = document.createElement('div');
-        div.className = 'product';
-        div.textContent = product;
-        productContainer.appendChild(div);
+        div.innerText = item;
+        container.appendChild(div);
       });
-      document.getElementById('categoryContainer').style.display = 'none';
-      productContainer.style.display = 'grid';
+      container.style.display = 'grid';
     }
   </script>
 </body>
