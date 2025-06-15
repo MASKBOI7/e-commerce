@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Flappy Bird - With Simple Bird Texture</title>
+  <title>Flappy Bird - With Features</title>
   <style>
     html, body {
       margin: 0;
@@ -39,7 +39,7 @@
 
     const GRAVITY = 0.25;
     const JUMP = 4.6;
-    const PIPE_WIDTH = 50;
+    const PIPE_WIDTH = 60;
     const PIPE_GAP = 130;
 
     let frames = 0, score = 0, started = false;
@@ -53,7 +53,7 @@
       velocity: 0,
       draw() {
         // Body
-        ctx.fillStyle = "#FFD700"; // Yellow body
+        ctx.fillStyle = "#FFD700";
         ctx.beginPath();
         ctx.arc(this.x + 15, this.y + 15, 15, 0, Math.PI * 2);
         ctx.fill();
@@ -71,6 +71,25 @@
         ctx.fillStyle = "#FFA500";
         ctx.beginPath();
         ctx.ellipse(this.x + 10, this.y + 15, 6, 4, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Eye
+        ctx.fillStyle = "white";
+        ctx.beginPath();
+        ctx.arc(this.x + 20, this.y + 10, 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc(this.x + 21, this.y + 10, 2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Tail
+        ctx.fillStyle = "#FFA500";
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y + 15);
+        ctx.lineTo(this.x - 6, this.y + 10);
+        ctx.lineTo(this.x - 6, this.y + 20);
+        ctx.closePath();
         ctx.fill();
       },
       flap() {
@@ -94,8 +113,26 @@
     function drawPipes() {
       ctx.fillStyle = "#228B22";
       pipes.forEach(pipe => {
-        ctx.fillRect(pipe.x, 0, PIPE_WIDTH, pipe.top);
-        ctx.fillRect(pipe.x, pipe.top + PIPE_GAP, PIPE_WIDTH, pipe.bottom);
+        // Top pipe
+        ctx.beginPath();
+        ctx.moveTo(pipe.x, 0);
+        ctx.lineTo(pipe.x + PIPE_WIDTH / 2, pipe.top - 10);
+        ctx.lineTo(pipe.x + PIPE_WIDTH, 0);
+        ctx.lineTo(pipe.x + PIPE_WIDTH, pipe.top);
+        ctx.lineTo(pipe.x, pipe.top);
+        ctx.closePath();
+        ctx.fill();
+
+        // Bottom pipe
+        const bY = pipe.top + PIPE_GAP;
+        ctx.beginPath();
+        ctx.moveTo(pipe.x, bY);
+        ctx.lineTo(pipe.x + PIPE_WIDTH, bY);
+        ctx.lineTo(pipe.x + PIPE_WIDTH, canvas.height);
+        ctx.lineTo(pipe.x + PIPE_WIDTH / 2, canvas.height - pipe.bottom + 10);
+        ctx.lineTo(pipe.x, canvas.height);
+        ctx.closePath();
+        ctx.fill();
       });
     }
 
